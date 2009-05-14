@@ -10,14 +10,14 @@ typedef unsigned long int word;
 
 class BitParser {
       public:
-	BitParser(unsigned char *line2Parse, int bits2Parse);
+	BitParser(unsigned char *line, int bits);
 
 	/* Returns the position of the next changing elements */
 	int nextChangingElement();
 
       private:
-	unsigned char *line2Parse;
-	int bits2Parse;
+	unsigned char *line;
+	int bits;
 	int lastBit;		// previous changing bit
 	int lastPos;		// previous result
 	unsigned char *sentinel;
