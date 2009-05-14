@@ -19,20 +19,20 @@ const word BitParser::wrun[2] = { 0, ~((word) 0) };
  * lastPos = -1 so that the search will begin with the first bit
  * lastPos = 0  so that if the first bit is 1 it will be a changing element
  */
-BitParser::BitParser(unsigned char *line, int bits)
+BitParser::BitParser(unsigned char *line, int nbits)
 {
-	assert(bits >= 0);
+	assert(nbits >= 0);
 	assert(line != NULL);
 
 	this->line = line;
-	this->bits = bits;
+	this->nbits = nbits;
 
 	lastPos = -1;
 	lastBit = 0;
 
-	sentinel = &line[(bits - 1) / CHAR_BIT];
+	sentinel = &line[(nbits - 1) / CHAR_BIT];
 	wsentinel = (word *)
-	    ((unsigned long int) &line[(bits - 1) / CHAR_BIT]
+	    ((unsigned long int) &line[(nbits - 1) / CHAR_BIT]
 	     / sizeof(wsentinel) * sizeof(wsentinel));
 }
 
@@ -42,15 +42,15 @@ BitParser::BitParser(unsigned char *line, int bits)
  * Returns the position of the first bit with the value "bit" in
  * the byte c, starting with the position pos. If it's not found
  * it returns -1.
- * c has a length of "bits" bits.
+ * c has a length of "nbits" nbits.
  */
-int BitParser::findBit(unsigned char c, int bits, int pos,
+int BitParser::findBit(unsigned char c, int nbits, int pos,
 		       unsigned char bit)
 {
-	assert(pos < bits);
+	assert(pos < nbits);
 
 	c >>= pos;
-	for (int i = pos; i < bits; i++) {
+	for (int i = pos; i < nbits; i++) {
 		if ((c & ((unsigned char) 1)) == bit)
 			return i;
 		c >>= 1;
@@ -71,15 +71,15 @@ int BitParser::findBit(unsigned char c, int bits, int pos,
  * (last chunk of a char) | (chars, words ... ,chars) | (first chunk of a char)
  *	Some parts can be missing (the last parts).
  * 	The last bit of the first part/char is at index:
- *  min(CHAR_BIT, remaining bits to parse)
+ *  min(CHAR_BIT, remaining nbits to parse)
  * 	If we don't find anything in the first part, we search at a char 
  * level untill c is "word aligned". Then we search at a word level.
  * 	If we still didn't find anything or we found a word with a changing
- * element (different than run) we search the remaining bits at a char level,
+ * element (different than run) we search the remaining nbits at a char level,
  * with the last char trunctated at a length of:
- *  bits % CHAR_BIT
+ *  nbits % CHAR_BIT
  *	If we don't find a changing element we return -1, and set lastPos to
- * bits in order to detect that we've searched all string, the next time
+ * nbits in order to detect that we've searched all string, the next time
  * the method is called.
  */
 
@@ -93,13 +93,13 @@ int BitParser::nextChangingElement()
 	int pos;		// position within the char
 	int startPos;		// starting position
 
-	if (lastPos == bits)	// nowhere to search
+	if (lastPos == nbits)	// nowhere to search
 		return -1;	// not found
 
 	// start the search
 	startPos = lastPos + 1;
-	if (startPos == bits) {	// nowhere to search
-		lastPos = bits;
+	if (startPos == nbits) {	// nowhere to search
+		lastPos = nbits;
 		return -1;	// not found
 	}
 
@@ -108,7 +108,7 @@ int BitParser::nextChangingElement()
 
 	// first part
 	pos = findBit(*c,
-		      min(CHAR_BIT, bits - BYTES_PARSED()*CHAR_BIT),
+		      min(CHAR_BIT, nbits - BYTES_PARSED()*CHAR_BIT),
 		      startPos % CHAR_BIT,
 		      bit);
 	if (pos >= 0) {		// found
@@ -126,7 +126,7 @@ int BitParser::nextChangingElement()
 	if (*c != run[lastBit]) {
 		pos = findBit(*c,
 			      min(CHAR_BIT,
-				  bits - BYTES_PARSED() * CHAR_BIT),
+				  nbits - BYTES_PARSED() * CHAR_BIT),
 			      0, bit);
 		if (pos >= 0) {	// found
 			lastBit = bit;
@@ -134,7 +134,7 @@ int BitParser::nextChangingElement()
 			return lastPos + 1;
 		}
 		// not found
-		lastPos = bits;
+		lastPos = nbits;
 		return -1;
 	}
 	
@@ -152,7 +152,7 @@ int BitParser::nextChangingElement()
 	}
 	pos = findBit(*c,
 		      min(CHAR_BIT,
-			  bits - BYTES_PARSED() * CHAR_BIT), 0, bit);
+			  nbits - BYTES_PARSED() * CHAR_BIT), 0, bit);
 	if (pos >= 0) {		// found
 		lastBit = bit;
 		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
@@ -160,7 +160,7 @@ int BitParser::nextChangingElement()
 	}
 
 	// not found
-	lastPos = bits;
+	lastPos = nbits;
 	return -1;
 }
 
