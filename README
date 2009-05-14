@@ -1,0 +1,51 @@
+	Programul face o cautare "obisnuita", tinandu-se cont si de cazurile 
+in care in care un byte nu are 8 biti.
+	Cautarea este impartita in 3 etape: 
+- ultima bucata din primul byte al locatiei in care se cauta
+- mijlocul liniei
+- prima bucata a ultimului byte al locatiei in care se cauta
+	Se utilizeaza o functie auxiliara care cauta un bit intr-un (bucata de)
+byte. Ea este utilizata pentru localizarea unui changing element.
+
+	Clasa stocheaza: 
+- o referinta catre "linia" in care se cauta,
+- nr de biti
+- pozitia ultimului changing element pentru a sti de unde sa incepem cautarea
+- valoarea ultimului bit cautat, pentru a sti ce sa cautam
+	Pentru a sti cand sa ne oprim utilizam o santinela.
+
+	Pentru a optimiza cat mai mult, santinela este calculata la 
+initializare (apelul constructorului).
+	
+	O posibila optimizare (putin probabil sa aiba efect asa de mare), este
+sa parcurgem run-urile la nivel de intreg (care are in mod tipic 32 de 
+biti). Avantajul unei astfel de parcurgeri consta in faptul ca hardware-ul 
+oricum lucreaza la nivel de cuvant si in loc sa lucram cu bucati de cuvant,
+lucram cu un cuvant intreg. Dezavantajul consta in faptul ca pointer-ul catre
+intreg trebuie sa fie la o adresa multiplu de cuvant ("aligned"), altfel 
+putem avea surpriza ca programul va "crapa" pe unele platforme (de ex:
+Sparc/Solaris).
+	In cazul meu, am lucrat cu o aliniera la nivel de long int, pentru
+a fi cat mai siguri. Programul a fost testat atat pe x86/Linux, cat si pe
+Sparc/Solaris si a mers fara probleme.
+	Lucrul la nivel de cuvant a necesitat unele modificari, fiind necesare
+noi variabile: santinela la nivel de cuvant, cuvinte cu run-uri de 0 sau 1.
+
+	O descriere mai clara a algoritmului se gaseste in comentariile din
+surse.
+
+	Ar mai fi de mentionat si ca se fac unele verificari ale parametrilor
+cu assert, astfel incat varianta finala sa nu aiba parte de vreun overhead.
+
+
+	Functiile de testare sunt parametrizate, astfel incat se pot face si 
+niste mici teste de performanta.
+	ATENTIE! S-ar putea ca testele de performanta sa dea gres datorita,
+sirurilor mari cu care se lucreaza. Se rezolva prin chemarea loc cu alti 
+parametri (mai mici).
+	Functiile de testare verifica doar pozitiile "changing" elementelor,
+ci si clipa in care nu se mai gasesc asemenea elemente.
+
+
+	Pentru compilare se poate utiliza fie Makefile (Unix),
+fie Microsoft.makefile (VC++).
