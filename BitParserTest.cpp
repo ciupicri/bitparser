@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <climits>
-#include <ctime>		// clock
+#include <ctime>          // clock
 #include "BitParser.h"
 
 using namespace std;
@@ -10,12 +10,12 @@ using namespace std;
 
 
 /*
- *	Initialises the line with the pattern required for test 1.
- *	1,0,1,0,...
+ * 	Initialises the line with the pattern required for test 1.
+ * 	1,0,1,0,...
  */
 void test1_initLine(unsigned char line2Parse[], unsigned int size)
 {
-	unsigned char c, bit;	// pattern and the current bit
+	unsigned char c, bit; // pattern and the current bit
 
 	// compute the 1,0,1,0 ... pattern
 	bit = 1;
@@ -64,8 +64,8 @@ bool test1(const int NBITS = 1000001)
 		changing_elements++;
 		if (pos != correct_pos) {
 			failed = true;
-			cerr << "Error: pos = " << pos <<
-			    " correct_pos = " << correct_pos << endl;
+			cerr << "Error: pos = " << pos
+			     << " correct_pos = " << correct_pos << endl;
 		}
 		correct_pos += 1;
 	}
@@ -77,7 +77,7 @@ bool test1(const int NBITS = 1000001)
 	}
 
 	cout << ((tf - ti) /
-		 (double) CLOCKS_PER_SEC) << " seconds" << endl;
+	         (double) CLOCKS_PER_SEC) << " seconds" << endl;
 
 	return failed;
 }
@@ -85,17 +85,17 @@ bool test1(const int NBITS = 1000001)
 
 
 /*
- *	Initialises the line with the pattern required for test 2.
+ * 	Initialises the line with the pattern required for test 2.
  */
 void test2_initLine(unsigned char line2Parse[], unsigned int size, 
-			int NBITS, int LRUN)
+                    int NBITS, int LRUN)
 {
-	unsigned char change[CHAR_BIT];	// border chars like 1,..1,0,...0
+	unsigned char change[CHAR_BIT]; // border chars like 1,..1,0,...0
 	// chars with a changing element
 	// change = {0,0,..0; 1,0..0; 1,1,..0; ... 1,1,..1} 
 	unsigned char c;
-	unsigned int limit;	// where is the border (changing element)
-	unsigned int bit;	// the current bit value
+	unsigned int limit; // where is the border (changing element)
+	unsigned int bit;   // the current bit value
 
 	// initialize change
 	change[0] = 0;
@@ -109,10 +109,10 @@ void test2_initLine(unsigned char line2Parse[], unsigned int size,
 	for (unsigned int i = 0; i < size; i++) {
 		line2Parse[i] = c;
 		if (((i + 1) * CHAR_BIT - 1) >= limit) {
-			if (bit) {	// 1,...1,0,...0
+			if (bit) { // 1,...1,0,...0
 				line2Parse[i] = change[limit % CHAR_BIT];
 				c = change[0];
-			} else {	// 0,...0,1,...1
+			} else {   // 0,...0,1,...1
 				line2Parse[i] = ~change[limit % CHAR_BIT];
 				c = ~change[0];
 			}
@@ -165,9 +165,9 @@ bool test2(int NBITS = 1000001, int LRUN = 10001)
 	if (changing_elements !=
 	    (NBITS / LRUN + ((NBITS % LRUN) ? 1 : 0) - 1)) {
 		failed = true;
-		cerr << "Error at the end ... " <<
-		    changing_elements << " changing elements detected" <<
-		    endl;
+		cerr << "Error at the end ... "
+		     << changing_elements << " changing elements detected"
+		     << endl;
 	}
 
 	cout << ((tf - ti) /

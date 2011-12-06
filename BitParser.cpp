@@ -1,9 +1,9 @@
 #include "BitParser.h"
-#include <algorithm>		// min, max
+#include <algorithm>  // min, max
 #include <iostream>
-#include <climits>		// CHAR_BIT
-#include <cassert>		// assert
-#include <cstdlib>		// NULL
+#include <climits>    // CHAR_BIT
+#include <cassert>    // assert
+#include <cstdlib>    // NULL
 
 using namespace std;
 
@@ -15,7 +15,7 @@ const word BitParser::wrun[2] = { 0, ~((word) 0) };
 
 /* Constructor */
 /*
- *	Initialiases the fields of the class like this:
+ * 	Initialiases the fields of the class like this:
  * lastPos = -1 so that the search will begin with the first bit
  * lastPos = 0  so that if the first bit is 1 it will be a changing element
  */
@@ -45,7 +45,7 @@ BitParser::BitParser(unsigned char *line, int nbits)
  * c has a length of "nbits" nbits.
  */
 int BitParser::findBit(unsigned char c, int nbits, int pos,
-		       unsigned char bit)
+                       unsigned char bit)
 {
 	assert(pos < nbits);
 
@@ -56,20 +56,20 @@ int BitParser::findBit(unsigned char c, int nbits, int pos,
 		c >>= 1;
 	}
 
-	return -1;		// not found
+	return -1; // not found
 }
 
 
 
 /* Searches for the next changing element */
 /*
- *	First we check if we can find a changing element; we check if the last
+ * 	First we check if we can find a changing element; we check if the last
  * search was succesfull, or if we have where to search.
- *	Then we start the main search. 
- *	We will start from lastPos + 1.
- *	The part of line in wich we search can be split in 3 parts:
+ * 	Then we start the main search. 
+ * 	We will start from lastPos + 1.
+ * 	The part of line in wich we search can be split in 3 parts:
  * (last chunk of a char) | (chars, words ... ,chars) | (first chunk of a char)
- *	Some parts can be missing (the last parts).
+ * 	Some parts can be missing (the last parts).
  * 	The last bit of the first part/char is at index:
  *  min(CHAR_BIT, remaining nbits to parse)
  * 	If we don't find anything in the first part, we search at a char 
@@ -78,13 +78,13 @@ int BitParser::findBit(unsigned char c, int nbits, int pos,
  * element (different than run) we search the remaining nbits at a char level,
  * with the last char trunctated at a length of:
  *  nbits % CHAR_BIT
- *	If we don't find a changing element we return -1, and set lastPos to
+ * 	If we don't find a changing element we return -1, and set lastPos to
  * nbits in order to detect that we've searched all string, the next time
  * the method is called.
  */
 
 // the number of bytes already parsed
-#define BYTES_PARSED()	(c - line)
+#define BYTES_PARSED() (c - line)
 int BitParser::nextChangingElement()
 {
 	unsigned char *c;	// pointer to the "byte" examined
@@ -98,20 +98,20 @@ int BitParser::nextChangingElement()
 
 	// start the search
 	startPos = lastPos + 1;
-	if (startPos == nbits) {	// nowhere to search
+	if (startPos == nbits) { // nowhere to search
 		lastPos = nbits;
-		return -1;	// not found
+		return -1; // not found
 	}
 
-	bit = 1 - lastBit;	// invert the last bit
+	bit = 1 - lastBit; // invert the last bit
 	c = &line[startPos / CHAR_BIT];
 
 	// first part
 	pos = findBit(*c,
-		      min(CHAR_BIT, nbits - BYTES_PARSED()*CHAR_BIT),
+		      min(CHAR_BIT, nbits - BYTES_PARSED() * CHAR_BIT),
 		      startPos % CHAR_BIT,
 		      bit);
-	if (pos >= 0) {		// found
+	if (pos >= 0) { // found
 		lastBit = bit;
 		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
 		return lastPos + 1;
@@ -125,10 +125,11 @@ int BitParser::nextChangingElement()
 	}
 	if (*c != run[lastBit]) {
 		pos = findBit(*c,
-			      min(CHAR_BIT,
-				  nbits - BYTES_PARSED() * CHAR_BIT),
-			      0, bit);
-		if (pos >= 0) {	// found
+		              min(CHAR_BIT,
+		                  nbits - BYTES_PARSED() * CHAR_BIT),
+		              0,
+		              bit);
+		if (pos >= 0) { // found
 			lastBit = bit;
 			lastPos = pos + BYTES_PARSED() * CHAR_BIT;
 			return lastPos + 1;
@@ -151,9 +152,11 @@ int BitParser::nextChangingElement()
 			break;
 	}
 	pos = findBit(*c,
-		      min(CHAR_BIT,
-			  nbits - BYTES_PARSED() * CHAR_BIT), 0, bit);
-	if (pos >= 0) {		// found
+	              min(CHAR_BIT,
+	                  nbits - BYTES_PARSED() * CHAR_BIT),
+	              0,
+	              bit);
+	if (pos >= 0) { // found
 		lastBit = bit;
 		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
 		return lastPos + 1;

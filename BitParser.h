@@ -5,7 +5,7 @@
 typedef unsigned long int word;
 
 /*
- *	Class for searching a bit pattern in a string/buffer.
+ * 	Class for searching a bit pattern in a string/buffer.
  */
 
 class BitParser {
@@ -18,15 +18,15 @@ class BitParser {
       private:
 	unsigned char *line;
 	int nbits;
-	int lastBit;		// previous changing bit
-	int lastPos;		// previous result
+	int lastBit; // previous changing bit
+	int lastPos; // previous result
 	unsigned char *sentinel;
 	word *wsentinel;
 	/* constants; ar trebui sa fie doar in cpp sau sa fie membri? */
-	static const unsigned char run[2];	// runs of 0s and 1s
-	static const word wrun[2];	// runs of 0s and 1s
+	static const unsigned char run[2]; // runs of 0s and 1s
+	static const word wrun[2]; // runs of 0s and 1s
 
 	int findBit(unsigned char c, int nbits, int pos, unsigned char bit);
 };
 
-#endif				/* _BitParser_H */
+#endif /* _BitParser_H */
