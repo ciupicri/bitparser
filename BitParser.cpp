@@ -118,7 +118,7 @@ int BitParser::nextChangingElement()
 	}
 	// parse untill we are aligned
 	for (c++;
-	     (c < sentinel) && (((unsigned int) c % sizeof(word)) != 0);
+	     (c < sentinel) && (((intptr_t) c % sizeof(word)) != 0);
 	     c++) {
 		if (*c != run[lastBit])
 			break;
