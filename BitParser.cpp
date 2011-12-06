@@ -108,7 +108,7 @@ int BitParser::nextChangingElement()
 
 	// first part
 	pos = findBit(*c,
-		      min(CHAR_BIT, nbits - BYTES_PARSED() * CHAR_BIT),
+		      min<int>(CHAR_BIT, nbits - BYTES_PARSED() * CHAR_BIT),
 		      startPos % CHAR_BIT,
 		      bit);
 	if (pos >= 0) { // found
@@ -125,8 +125,8 @@ int BitParser::nextChangingElement()
 	}
 	if (*c != run[lastBit]) {
 		pos = findBit(*c,
-		              min(CHAR_BIT,
-		                  nbits - BYTES_PARSED() * CHAR_BIT),
+		              min<int>(CHAR_BIT,
+		                       nbits - BYTES_PARSED() * CHAR_BIT),
 		              0,
 		              bit);
 		if (pos >= 0) { // found
@@ -152,8 +152,8 @@ int BitParser::nextChangingElement()
 			break;
 	}
 	pos = findBit(*c,
-	              min(CHAR_BIT,
-	                  nbits - BYTES_PARSED() * CHAR_BIT),
+	              min<int>(CHAR_BIT,
+	                       nbits - BYTES_PARSED() * CHAR_BIT),
 	              0,
 	              bit);
 	if (pos >= 0) { // found
