@@ -2,7 +2,7 @@
 #include <cassert>
 #include <climits>
 #include <ctime>          // clock
-#include "BitParser.h"
+#include "BitParser.hpp"
 
 using namespace std;
 

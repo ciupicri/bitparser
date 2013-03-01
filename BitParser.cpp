@@ -1,4 +1,4 @@
-#include "BitParser.h"
+#include "BitParser.hpp"
 #include <algorithm>  // min, max
 #include <iostream>
 #include <climits>    // CHAR_BIT
