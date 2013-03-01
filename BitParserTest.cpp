@@ -189,9 +189,9 @@ int main(int argc, char *argv[])
 
 	// speed tests
 	cout << endl << " -- speed tests" << endl;
-	failed = failed || test1(70000000);
+	failed = failed || test1(4*1024*1024);
 	cout << endl;
-	failed = failed || test2(70000000, 700000);
+	failed = failed || test2(4*1024*1024, 2*1024*1024);
 
 	return (int) failed;
 }
