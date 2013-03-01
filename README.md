@@ -1,3 +1,40 @@
+BitParser
+=========
+
+This program was originally a homework for a job interview taken in 2004. I
+didn't know C++ back then (and I still don't know), so the code isn't too
+great, but it did its job nevertheless.
+
+The purpose of the BitParser library is to iterate (parse) over a long stream
+of bits and detect the *changes* from 0 to 1 and vice versa. For example the
+stream `000011111100` has 2 changes. The stream `010101` has 5 changes. A
+contiguous sequence of the same bit is called a *run*.
+
+One of the requirements was to make the program as fast as possible, so instead
+of testing an unsigned char (byte) at a time, I decided to test a whole word
+since a computer works natively with words, not bytes. Unfortunately this
+raises the problem of alignment. While for example on Linux/x86 you can read a
+word from any address, the program crashed on Solaris/SPARC (with SIGBUS if I
+remember correctly). So I had to modify the program accordingly.
+
+The current version isn't very far from the original. I cleaned some of the
+code and updated it to more modern standards i.e. 2011 ISO C++.
+
+Building
+--------
+
+	make
+
+
+Running the tests
+-----------------
+
+	./BitParserTest
+
+
+Original Romanian text
+======================
+
 Programul face o cautare „obișnuită”, ținându-se cont și de cazurile în care un
 byte nu are 8 biti.
 
