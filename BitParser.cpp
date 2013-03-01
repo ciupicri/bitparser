@@ -84,7 +84,7 @@ int BitParser::findBit(unsigned char c, int nbits, int pos,
  */
 
 // the number of bytes already parsed
-#define BYTES_PARSED() (c - line)
+#define PARSED_CHARS() (c - line)
 int BitParser::nextChangingElement()
 {
 	unsigned char *c;	// pointer to the "byte" examined
@@ -108,12 +108,12 @@ int BitParser::nextChangingElement()
 
 	// first part
 	pos = findBit(*c,
-		      min<int>(CHAR_BIT, nbits - BYTES_PARSED() * CHAR_BIT),
+		      min<int>(CHAR_BIT, nbits - PARSED_CHARS() * CHAR_BIT),
 		      startPos % CHAR_BIT,
 		      bit);
 	if (pos >= 0) { // found
 		lastBit = bit;
-		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
+		lastPos = pos + PARSED_CHARS() * CHAR_BIT;
 		return lastPos + 1;
 	}
 	// parse until we are aligned
@@ -126,12 +126,12 @@ int BitParser::nextChangingElement()
 	if (*c != run[lastBit]) {
 		pos = findBit(*c,
 		              min<int>(CHAR_BIT,
-		                       nbits - BYTES_PARSED() * CHAR_BIT),
+		                       nbits - PARSED_CHARS() * CHAR_BIT),
 		              0,
 		              bit);
 		if (pos >= 0) { // found
 			lastBit = bit;
-			lastPos = pos + BYTES_PARSED() * CHAR_BIT;
+			lastPos = pos + PARSED_CHARS() * CHAR_BIT;
 			return lastPos + 1;
 		}
 		// not found
@@ -153,12 +153,12 @@ int BitParser::nextChangingElement()
 	}
 	pos = findBit(*c,
 	              min<int>(CHAR_BIT,
-	                       nbits - BYTES_PARSED() * CHAR_BIT),
+	                       nbits - PARSED_CHARS() * CHAR_BIT),
 	              0,
 	              bit);
 	if (pos >= 0) { // found
 		lastBit = bit;
-		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
+		lastPos = pos + PARSED_CHARS() * CHAR_BIT;
 		return lastPos + 1;
 	}
 
@@ -166,5 +166,4 @@ int BitParser::nextChangingElement()
 	lastPos = nbits;
 	return -1;
 }
-
-#undef BYTES_PARSED
+#undef PARSED_CHARS
