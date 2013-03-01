@@ -22,7 +22,7 @@ class BitParser {
 	int lastPos; // previous result
 	unsigned char *sentinel;
 	word *wsentinel;
-	/* constants; ar trebui sa fie doar in cpp sau sa fie membri? */
+	/* constants (should these be part of the class declaration?) */
 	static const unsigned char run[2]; // runs of 0s and 1s
 	static const word wrun[2]; // runs of 0s and 1s
 
