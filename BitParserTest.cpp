@@ -41,7 +41,7 @@ void test1_initLine(unsigned char line2Parse[], unsigned int size)
  */
 bool test1(const int NBITS = 1000001)
 {
-	unsigned char line2Parse[(NBITS - 1) / CHAR_BIT + 1];
+	unsigned char line2Parse[NBITS/CHAR_BIT + ((NBITS%CHAR_BIT) ? 1 : 0)];
 	int pos, correct_pos;
 	int changing_elements;
 	clock_t ti, tf;
@@ -130,7 +130,7 @@ void test2_initLine(unsigned char line2Parse[], unsigned int size,
  */
 bool test2(int NBITS = 1000001, int LRUN = 10001)
 {
-	unsigned char line2Parse[(NBITS - 1) / CHAR_BIT + 1];
+	unsigned char line2Parse[NBITS/CHAR_BIT + ((NBITS%CHAR_BIT) ? 1 : 0)];
 	int pos, correct_pos;
 	int changing_elements;
 	clock_t ti, tf;
