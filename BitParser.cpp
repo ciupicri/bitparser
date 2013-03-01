@@ -8,8 +8,8 @@
 using namespace std;
 
 /* initialize the static data members */
-const unsigned char BitParser::run[2] = { 0, ~((unsigned char) 0) };
-const word BitParser::wrun[2] = { 0, ~((word) 0) };
+const unsigned char BitParser::run[2] = { 0, std::numeric_limits<unsigned char>::max() };
+const word BitParser::wrun[2] = { 0, std::numeric_limits<word>::max() };
 
 
 
