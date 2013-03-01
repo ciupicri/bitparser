@@ -15,9 +15,9 @@ const word BitParser::wrun[2] = { 0, ~((word) 0) };
 
 /* Constructor */
 /*
- * 	Initialiases the fields of the class like this:
+ * 	Initializes the fields of the class like this:
  * lastPos = -1 so that the search will begin with the first bit
- * lastPos = 0  so that if the first bit is 1 it will be a changing element
+ * lastBit = 0  so that if the first bit is 1 it will be a changing element
  */
 BitParser::BitParser(unsigned char *line, int nbits)
 {
@@ -64,7 +64,7 @@ int BitParser::findBit(unsigned char c, int nbits, int pos,
 /* Searches for the next changing element */
 /*
  * 	First we check if we can find a changing element; we check if the last
- * search was succesfull, or if we have where to search.
+ * search was successful, or if we have where to search.
  * 	Then we start the main search. 
  * 	We will start from lastPos + 1.
  * 	The part of line in wich we search can be split in 3 parts:
@@ -73,10 +73,10 @@ int BitParser::findBit(unsigned char c, int nbits, int pos,
  * 	The last bit of the first part/char is at index:
  *  min(CHAR_BIT, remaining nbits to parse)
  * 	If we don't find anything in the first part, we search at a char 
- * level untill c is "word aligned". Then we search at a word level.
+ * level until c is "word aligned". Then we search at a word level.
  * 	If we still didn't find anything or we found a word with a changing
  * element (different than run) we search the remaining nbits at a char level,
- * with the last char trunctated at a length of:
+ * with the last char truncated at a length of:
  *  nbits % CHAR_BIT
  * 	If we don't find a changing element we return -1, and set lastPos to
  * nbits in order to detect that we've searched all string, the next time
@@ -116,7 +116,7 @@ int BitParser::nextChangingElement()
 		lastPos = pos + BYTES_PARSED() * CHAR_BIT;
 		return lastPos + 1;
 	}
-	// parse untill we are aligned
+	// parse until we are aligned
 	for (c++;
 	     (c < sentinel) && (((intptr_t) c % sizeof(word)) != 0);
 	     c++) {

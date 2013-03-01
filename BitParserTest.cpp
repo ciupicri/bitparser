@@ -10,7 +10,7 @@ using namespace std;
 
 
 /*
- * 	Initialises the line with the pattern required for test 1.
+ * 	Initializes the line with the pattern required for test 1.
  * 	1,0,1,0,...
  */
 void test1_initLine(unsigned char line2Parse[], unsigned int size)
@@ -85,7 +85,7 @@ bool test1(const int NBITS = 1000001)
 
 
 /*
- * 	Initialises the line with the pattern required for test 2.
+ * 	Initializes the line with the pattern required for test 2.
  */
 void test2_initLine(unsigned char line2Parse[], unsigned int size, 
                     int NBITS, int LRUN)
